@@ -1,0 +1,15 @@
+---
+version: "3"
+
+# yamllint disable rule:line-length
+tasks:
+  coverage:
+    desc: Check code coverage
+    cmds:
+      - go test ./... -coverprofile=coverage.out
+      - go tool cover -html=coverage.out -o coverage.html
+
+  lint:
+    desc: "lint the project"
+    cmds:
+      - golangci-lint -v run

@@ -7,6 +7,8 @@
     devShell.x86_64-linux = mkShell {
       buildInputs = [
         go_1_18
+        gotools # provides godoc
+        go-task
       ];
     };
   };
