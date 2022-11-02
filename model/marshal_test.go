@@ -92,6 +92,37 @@ func TestMarshalEntity(t *testing.T) {
 			},
 			json: `{"id":"cabin:4","light":{"type":"Property","value":100,"wall":{"object":"wall:right","type":"Relationship"}},"type":"thing"}`,
 		},
+		{
+			name: "fully nested properties and relationships",
+			entity: model.Entity{
+				ID:   "thing:5",
+				Type: "thing",
+				Properties: model.Properties{
+					"p1": {
+						Value: 100,
+						Relationships: model.Relationships{
+							"p1r": {Object: "urn:thing:6"},
+						},
+						Properties: model.Properties{
+							"p1p": {Value: true},
+						},
+					},
+				},
+				Relationships: model.Relationships{
+					"r1": {
+						Object: "urn:thing:7",
+						Properties: model.Properties{
+							"r1p1": {Value: "hello"},
+							"r1p2": {Value: "hello, too"},
+						},
+						Relationships: model.Relationships{
+							"r1r": {Object: "urn:thing:8"},
+						},
+					},
+				},
+			},
+			json: `{"id":"thing:5","p1":{"p1p":{"type":"Property","value":true},"p1r":{"object":"urn:thing:6","type":"Relationship"},"type":"Property","value":100},"r1":{"object":"urn:thing:7","r1p1":{"type":"Property","value":"hello"},"r1p2":{"type":"Property","value":"hello, too"},"r1r":{"object":"urn:thing:8","type":"Relationship"},"type":"Relationship"},"type":"thing"}`,
+		},
 	}
 
 	for _, y := range tests {
