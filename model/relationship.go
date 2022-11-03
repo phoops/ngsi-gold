@@ -44,7 +44,7 @@ func (r *Relationship) UnmarshalJSON(b []byte) error {
 
 	// First pass - extract annotated fields
 	if err := json.Unmarshal(b, &d); err != nil {
-		return err
+		return ErrInvalidRelationship(err)
 	}
 
 	// Check for missing mandatory value
