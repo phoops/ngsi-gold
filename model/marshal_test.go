@@ -93,35 +93,34 @@ func TestMarshalEntity(t *testing.T) {
 			json: `{"id":"cabin:4","light":{"type":"Property","value":100,"wall":{"object":"wall:right","type":"Relationship"}},"type":"thing"}`,
 		},
 		{
-			name: "fully nested properties and relationships",
+			name: "property and relationship both with nested property and relationship",
 			entity: model.Entity{
-				ID:   "thing:5",
+				ID:   "cabin:4",
 				Type: "thing",
 				Properties: model.Properties{
-					"p1": {
+					"light": {
 						Value: 100,
 						Relationships: model.Relationships{
-							"p1r": {Object: "urn:thing:6"},
+							"wall": {Object: "wall:right"},
 						},
 						Properties: model.Properties{
-							"p1p": {Value: true},
+							"color": {Value: "white"},
 						},
 					},
 				},
 				Relationships: model.Relationships{
-					"r1": {
-						Object: "urn:thing:7",
-						Properties: model.Properties{
-							"r1p1": {Value: "hello"},
-							"r1p2": {Value: "hello, too"},
-						},
+					"town": {
+						Object: "town:rome",
 						Relationships: model.Relationships{
-							"r1r": {Object: "urn:thing:8"},
+							"neighborhood": {Object: "town:rome:neighborhood:eur"},
+						},
+						Properties: model.Properties{
+							"transient": {Value: false},
 						},
 					},
 				},
 			},
-			json: `{"id":"thing:5","p1":{"p1p":{"type":"Property","value":true},"p1r":{"object":"urn:thing:6","type":"Relationship"},"type":"Property","value":100},"r1":{"object":"urn:thing:7","r1p1":{"type":"Property","value":"hello"},"r1p2":{"type":"Property","value":"hello, too"},"r1r":{"object":"urn:thing:8","type":"Relationship"},"type":"Relationship"},"type":"thing"}`,
+			json: `{"id":"cabin:4","light":{"color":{"type":"Property","value":"white"},"type":"Property","value":100,"wall":{"object":"wall:right","type":"Relationship"}},"town":{"neighborhood":{"object":"town:rome:neighborhood:eur","type":"Relationship"},"object":"town:rome","transient":{"type":"Property","value":false},"type":"Relationship"},"type":"thing"}`,
 		},
 	}
 

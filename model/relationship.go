@@ -54,9 +54,8 @@ func (r *Relationship) UnmarshalJSON(b []byte) error {
 
 	// Second pass - extract rest of the fields present in the JSON
 	var jsonValues map[string]json.RawMessage
-	if err := json.Unmarshal(b, &jsonValues); err != nil {
-		return err
-	}
+	_ = json.Unmarshal(b, &jsonValues)
+
 	typ := reflect.TypeOf(d)
 	for i := 0; i < typ.NumField(); i++ {
 		field := typ.Field(i)

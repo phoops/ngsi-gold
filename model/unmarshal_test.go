@@ -98,19 +98,25 @@ func TestUnmarshalRelationshipErrors(t *testing.T) {
 			err:  model.ErrRelationshipWrongType,
 		},
 		{
-			name:   "malformed nested relationship",
-			json:   `{"type":"Relationship","object":"urn:object_id","r1":"definitely a relationship"}`,
-			errMsg: "cannot unmarshal attribute r1: json: cannot unmarshal string into Go value of type model.Attribute",
+			name:   "invalid nested attribute",
+			json:   `{"type":"Relationship","object":"urn:object_id","a1":"definitely am attribute"}`,
+			errMsg: "cannot unmarshal attribute a1: json: cannot unmarshal string into Go value of type model.Attribute",
 		},
+		{
+			name:   "invalid nested relationship",
+			json:   `{"type":"Relationship","object":"urn:object_id","r1":{"type":"Relationship","object": 1}}`,
+			errMsg: "cannot unmarshal relationship r1: json: cannot unmarshal number into Go struct field readRelationship.object of type string",
+		},
+		// TODO: needs error from property unmarshaling
+		// {
+		// 	name:   "invalid nested property",
+		// 	json:   `{"type":"Relationship","object":"urn:object_id","p1":{"type":"Property"}}`,
+		// 	errMsg: "",
+		// },
 	}
 
 	for _, y := range tests {
 		t.Run(y.name, func(t *testing.T) {
-			// test self-check
-			var js interface{}
-			isJSON := json.Unmarshal([]byte(y.json), &js) == nil
-			assert.True(t, isJSON)
-
 			// unmarshal
 			r := model.Relationship{}
 			err := json.Unmarshal([]byte(y.json), &r)
