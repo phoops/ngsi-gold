@@ -13,5 +13,12 @@ type ErrInvalidProperty error
 
 var (
 	ErrPropertyWrongType    ErrInvalidProperty = errors.New(`Property must have "Property" type`)
-	ErrPropertyMissingValue ErrInvalidProperty = errors.New(`Property must have an "value" field`)
+	ErrPropertyMissingValue ErrInvalidProperty = errors.New(`Property must have a "value" field`)
+)
+
+type ErrInvalidEntity error
+
+var (
+	ErrEntityMissingType ErrInvalidEntity = errors.New(`Entity must have a type`)
+	ErrEntityMissingID   ErrInvalidEntity = errors.New(`Entity must have an ID`)
 )

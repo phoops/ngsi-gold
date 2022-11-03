@@ -284,7 +284,137 @@ func TestUnmarshalPropertyErrors(t *testing.T) {
 				assert.ErrorIs(t, err, y.err)
 			} else {
 				// Check the correct error type and resulting message
-				_, ok := err.(model.ErrInvalidRelationship)
+				_, ok := err.(model.ErrInvalidProperty)
+				assert.True(t, ok)
+				assert.ErrorContains(t, err, y.errMsg)
+			}
+		})
+	}
+}
+
+func TestUnmarshalEntity(t *testing.T) {
+	type testCase struct {
+		name   string
+		json   string
+		entity model.Entity
+	}
+
+	tests := []testCase{
+		{
+			name: "shallow",
+			json: `{"type":"Room", "id":"urn:room:1"}`,
+			entity: model.Entity{
+				ID:   "urn:room:1",
+				Type: "Room",
+			},
+		},
+		{
+			name: "nested relationship",
+			json: `{"type":"Room", "id":"urn:room:1", "r1":{"type":"Relationship","object":"urn:nested_object_id"}}`,
+			entity: model.Entity{
+				ID:   "urn:room:1",
+				Type: "Room",
+				Relationships: model.Relationships{
+					"r1": {Object: "urn:nested_object_id"},
+				},
+			},
+		},
+		{
+			name: "nested property",
+			json: `{"type":"Room", "id":"urn:room:1", "p1":{"type":"Property","value":"property value"}}`,
+			entity: model.Entity{
+				ID:   "urn:room:1",
+				Type: "Room",
+				Properties: model.Properties{
+					"p1": {Value: "property value"},
+				},
+			},
+		},
+		{
+			name: "ignored extra key",
+			json: `{"type":"Room", "id":"urn:room:1", "e1":{"type":"something", "color":"red"}}`,
+			entity: model.Entity{
+				ID:   "urn:room:1",
+				Type: "Room",
+			},
+		},
+	}
+
+	for _, y := range tests {
+		t.Run(y.name, func(t *testing.T) {
+			// test self-check
+			var js interface{}
+			isJSON := json.Unmarshal([]byte(y.json), &js) == nil
+			assert.True(t, isJSON)
+
+			// test unmarshaling
+			e := model.Entity{}
+			err := json.Unmarshal([]byte(y.json), &e)
+			assert.NoError(t, err)
+			assert.EqualValues(t, y.entity, e)
+		})
+	}
+}
+
+func TestUnmarshalEntityErrors(t *testing.T) {
+	type testCase struct {
+		name   string
+		json   string
+		err    error
+		errMsg string
+	}
+
+	tests := []testCase{
+		{
+			name:   "malformed type",
+			json:   `{"type":[],"id":"book:1"}`,
+			errMsg: "json: cannot unmarshal array into Go struct field readEntity.type of type string",
+		},
+		{
+			name:   "malformed id",
+			json:   `{"type":"Book","id":0}`,
+			errMsg: "json: cannot unmarshal number into Go struct field readEntity.id of type string",
+		},
+		{
+			name: "missing id",
+			json: `{"type":"Property"}`,
+			err:  model.ErrEntityMissingID,
+		},
+		{
+			name: "no type",
+			json: `{"id":"book:22"}`,
+			err:  model.ErrEntityMissingType,
+		},
+		{
+			name:   "invalid nested attribute",
+			json:   `{"type":"Room", "id":"urn:room:1","a1":"definitely am attribute"}`,
+			errMsg: "cannot unmarshal attribute a1: json: cannot unmarshal string into Go value of type model.Attribute",
+		},
+		{
+			name:   "invalid nested relationship",
+			json:   `{"type":"Room", "id":"urn:room:1","r1":{"type":"Relationship","object": 1}}`,
+			errMsg: "cannot unmarshal relationship r1",
+		},
+		{
+			name:   "invalid nested property",
+			json:   `{"type":"Room", "id":"urn:room:1","p1":{"type":"Property"}}`,
+			errMsg: "cannot unmarshal property p1",
+		},
+	}
+
+	for _, y := range tests {
+		t.Run(y.name, func(t *testing.T) {
+			// unmarshal
+			p := model.Entity{}
+			err := json.Unmarshal([]byte(y.json), &p)
+			assert.Error(t, err)
+
+			if y.err != nil {
+				// Check the precise error instance
+				assert.ErrorIs(t, err, y.err)
+			} else {
+				// Check the correct error type and resulting message
+				_, ok := err.(model.ErrInvalidEntity)
 				assert.True(t, ok)
 				assert.ErrorContains(t, err, y.errMsg)
 			}
