@@ -19,7 +19,7 @@ func (r *Relationship) Type() string {
 }
 
 func (r Relationship) MarshalJSON() ([]byte, error) {
-	data := map[string]interface{}{}
+	data := map[string]any{}
 
 	data["type"] = r.Type()
 	data["object"] = r.Object

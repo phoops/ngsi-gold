@@ -20,7 +20,7 @@ func (p *Property) Type() string {
 }
 
 func (p Property) MarshalJSON() ([]byte, error) {
-	data := map[string]interface{}{}
+	data := map[string]any{}
 
 	data["type"] = p.Type()
 	data["value"] = p.Value

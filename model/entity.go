@@ -25,7 +25,7 @@ type Entity struct {
 }
 
 func (e Entity) MarshalJSON() ([]byte, error) {
-	data := map[string]interface{}{}
+	data := map[string]any{}
 
 	data["type"] = e.Type
 	data["id"] = e.ID

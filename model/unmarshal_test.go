@@ -55,7 +55,7 @@ func TestUnmarshalRelationship(t *testing.T) {
 	for _, y := range tests {
 		t.Run(y.name, func(t *testing.T) {
 			// test self-check
-			var js interface{}
+			var js any
 			isJSON := json.Unmarshal([]byte(y.json), &js) == nil
 			assert.True(t, isJSON)
 
@@ -194,14 +194,14 @@ func TestUnmarshalProperty(t *testing.T) {
 			name: "list multi-value",
 			json: `{"type":"Property","value":["one","two"]}`,
 			property: model.Property{
-				Value: []interface{}{"one", "two"},
+				Value: []any{"one", "two"},
 			},
 		},
 		{
 			name: "set multi-value",
 			json: `{"type":"Property","value":{"one": 1,"two": 2}}`,
 			property: model.Property{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"one": float64(1),
 					"two": float64(2),
 				},
@@ -212,7 +212,7 @@ func TestUnmarshalProperty(t *testing.T) {
 	for _, y := range tests {
 		t.Run(y.name, func(t *testing.T) {
 			// test self-check
-			var js interface{}
+			var js any
 			isJSON := json.Unmarshal([]byte(y.json), &js) == nil
 			assert.True(t, isJSON)
 
@@ -343,7 +343,7 @@ func TestUnmarshalEntity(t *testing.T) {
 	for _, y := range tests {
 		t.Run(y.name, func(t *testing.T) {
 			// test self-check
-			var js interface{}
+			var js any
 			isJSON := json.Unmarshal([]byte(y.json), &js) == nil
 			assert.True(t, isJSON)
 
