@@ -2,7 +2,9 @@ package model_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/phoops/ngsild/model"
 	"github.com/stretchr/testify/assert"
@@ -44,6 +46,8 @@ func TestMarshalEntity(t *testing.T) {
 		entity model.Entity
 		json   string
 	}
+
+	observedTest := time.Now()
 
 	tests := []entityTest{
 		{
@@ -121,6 +125,34 @@ func TestMarshalEntity(t *testing.T) {
 				},
 			},
 			json: `{"id":"cabin:4","light":{"color":{"type":"Property","value":"white"},"type":"Property","value":100,"wall":{"object":"wall:right","type":"Relationship"}},"town":{"neighborhood":{"object":"town:rome:neighborhood:eur","type":"Relationship"},"object":"town:rome","transient":{"type":"Property","value":false},"type":"Relationship"},"type":"thing"}`,
+		},
+		{
+			name: "relationship with special attribute",
+			entity: model.Entity{
+				ID:   "cabin:4",
+				Type: "thing",
+				Relationships: model.Relationships{
+					"town": {
+						Object:     "town:rome",
+						ObservedAt: &observedTest,
+					},
+				},
+			},
+			json: fmt.Sprintf(`{"id":"cabin:4","town":{"object":"town:rome","observedAt":"%s","type":"Relationship"},"type":"thing"}`, observedTest.Format(time.RFC3339Nano)),
+		},
+		{
+			name: "property with special attribute",
+			entity: model.Entity{
+				ID:   "cabin:4",
+				Type: "thing",
+				Properties: model.Properties{
+					"light": {
+						Value:      100,
+						ObservedAt: &observedTest,
+					},
+				},
+			},
+			json: fmt.Sprintf(`{"id":"cabin:4","light":{"observedAt":"%s","type":"Property","value":100},"type":"thing"}`, observedTest.Format(time.RFC3339Nano)),
 		},
 	}
 

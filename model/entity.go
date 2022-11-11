@@ -22,6 +22,7 @@ type Entity struct {
 	Type          string        `json:"type"` // Type of the entity used for categorization
 	Properties    Properties    `json:"-"`    // Values that define the entity
 	Relationships Relationships `json:"-"`    // Links to other entities
+	// Location      *GeoProperty  `json:"location,omitempty"` // GeoProperty not yet implemented
 }
 
 func (e Entity) MarshalJSON() ([]byte, error) {
@@ -29,6 +30,9 @@ func (e Entity) MarshalJSON() ([]byte, error) {
 
 	data["type"] = e.Type
 	data["id"] = e.ID
+	// if e.Location != nil {
+	// 	data["location"] = e.Location
+	// }
 
 	for k, v := range e.Properties {
 		data[k] = v

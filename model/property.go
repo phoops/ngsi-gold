@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 )
@@ -13,6 +14,9 @@ type Property struct {
 	Value         any           `json:"value"`
 	Properties    Properties    `json:"-"`
 	Relationships Relationships `json:"-"`
+	ObservedAt    *time.Time    `json:"observedAt,omitempty"`
+	UnitCode      *string       `json:"unitCode,omitempty"`
+	DatasetID     *string       `json:"datasetId,omitempty"`
 }
 
 func (p *Property) Type() string {
@@ -24,6 +28,15 @@ func (p Property) MarshalJSON() ([]byte, error) {
 
 	data["type"] = p.Type()
 	data["value"] = p.Value
+	if p.ObservedAt != nil {
+		data["observedAt"] = p.ObservedAt
+	}
+	if p.DatasetID != nil {
+		data["datasetId"] = p.DatasetID
+	}
+	if p.UnitCode != nil {
+		data["unitCode"] = p.UnitCode
+	}
 
 	for k, v := range p.Properties {
 		data[k] = v

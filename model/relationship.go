@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 )
@@ -12,6 +13,8 @@ type Relationship struct {
 	Object        string        `json:"object"`
 	Properties    Properties    `json:"-"`
 	Relationships Relationships `json:"-"`
+	ObservedAt    *time.Time    `json:"observedAt,omitempty"`
+	DatasetID     *string       `json:"datasetId,omitempty"`
 }
 
 func (r *Relationship) Type() string {
@@ -23,6 +26,12 @@ func (r Relationship) MarshalJSON() ([]byte, error) {
 
 	data["type"] = r.Type()
 	data["object"] = r.Object
+	if r.ObservedAt != nil {
+		data["observedAt"] = r.ObservedAt
+	}
+	if r.DatasetID != nil {
+		data["datasetId"] = r.DatasetID
+	}
 
 	for k, v := range r.Properties {
 		data[k] = v

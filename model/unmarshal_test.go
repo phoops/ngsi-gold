@@ -15,6 +15,7 @@ func TestUnmarshalRelationship(t *testing.T) {
 		relationship model.Relationship
 	}
 
+	testDataset := "test"
 	tests := []testCase{
 		{
 			name: "shallow",
@@ -48,6 +49,14 @@ func TestUnmarshalRelationship(t *testing.T) {
 			json: `{"type":"Relationship","object":"urn:object_id", "e1":{"type":"something", "color":"red"}}`,
 			relationship: model.Relationship{
 				Object: "urn:object_id",
+			},
+		},
+		{
+			name: "considered optional attribute",
+			json: `{"type":"Relationship","object":"urn:object_id", "datasetId":"test"}`,
+			relationship: model.Relationship{
+				Object:    "urn:object_id",
+				DatasetID: &testDataset,
 			},
 		},
 	}
@@ -141,6 +150,7 @@ func TestUnmarshalProperty(t *testing.T) {
 		property model.Property
 	}
 
+	testDataset := "UV index"
 	tests := []testCase{
 		{
 			name: "shallow",
@@ -205,6 +215,14 @@ func TestUnmarshalProperty(t *testing.T) {
 					"one": float64(1),
 					"two": float64(2),
 				},
+			},
+		},
+		{
+			name: "set multi-value",
+			json: `{"type":"Property","value":9.4,"datasetId":"UV index"}`,
+			property: model.Property{
+				Value:     float64(9.4),
+				DatasetID: &testDataset,
 			},
 		},
 	}
