@@ -60,6 +60,6 @@ func (client *NgsiLdClient) CreateEntity(ctx context.Context, ldCtx *ldcontext.L
 		return fmt.Errorf("Unexpected status code: '%d'\nResponse body: %s", resp.StatusCode, string(bodyBytes))
 	}
 
-	return fmt.Errorf("Entity with id %s already exists", entity.ID)
+	return errors.Wrapf(ErrNgsiLdEntityExists, "ID: %s", entity.ID)
 
 }

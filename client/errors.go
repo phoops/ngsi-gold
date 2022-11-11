@@ -4,6 +4,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Client configuration
 type ErrInvalidClientConfig error
 
 var ErrMissingURL ErrInvalidClientConfig = errors.New("invalid client configuration: missing URL")
@@ -12,3 +13,8 @@ var ErrWrongCustomHeaderFormat ErrInvalidClientConfig = errors.New("invalid clie
 
 // NGSI-LD errors URIs
 var ngsiLdErrAlreadyExist = "https://uri.etsi.org/ngsi-ld/errors/AlreadyExists"
+
+// Operations
+type ErrNgsiLdOperation error
+
+var ErrNgsiLdEntityExists = errors.New("Entity already exists")
