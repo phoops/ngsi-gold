@@ -124,3 +124,26 @@ func (e *Entity) UnmarshalJSON(b []byte) error {
 
 	return nil
 }
+
+func (e *Entity) Validate(strictness bool) ValidationResult {
+	if len(e.ID) == 0 {
+		return ErrEntityMissingID
+	}
+	if len(e.Type) == 0 {
+		return ErrEntityMissingType
+	}
+
+	for _, x := range e.Properties {
+		err := x.Validate(strictness)
+		if err != nil {
+			return err
+		}
+	}
+	for _, x := range e.Relationships {
+		err := x.Validate(strictness)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}

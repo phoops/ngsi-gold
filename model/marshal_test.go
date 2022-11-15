@@ -64,7 +64,7 @@ func TestMarshalEntity(t *testing.T) {
 				ID:   "room:2",
 				Type: "Room",
 				Properties: model.Properties{
-					"key": {Value: true},
+					"key": model.Property{Value: true},
 				},
 			},
 			json: `{"id":"room:2","key":{"type":"Property","value":true},"type":"Room"}`,
@@ -75,7 +75,7 @@ func TestMarshalEntity(t *testing.T) {
 				ID:   "bulb:3",
 				Type: "Light",
 				Relationships: model.Relationships{
-					"wall": {Object: "wall:north-east"},
+					"wall": model.Relationship{Object: "wall:north-east"},
 				},
 			},
 			json: `{"id":"bulb:3","type":"Light","wall":{"object":"wall:north-east","type":"Relationship"}}`,
@@ -86,10 +86,10 @@ func TestMarshalEntity(t *testing.T) {
 				ID:   "cabin:4",
 				Type: "thing",
 				Properties: model.Properties{
-					"light": {
+					"light": model.Property{
 						Value: 100,
 						Relationships: model.Relationships{
-							"wall": {Object: "wall:right"},
+							"wall": model.Relationship{Object: "wall:right"},
 						},
 					},
 				},
@@ -102,24 +102,24 @@ func TestMarshalEntity(t *testing.T) {
 				ID:   "cabin:4",
 				Type: "thing",
 				Properties: model.Properties{
-					"light": {
+					"light": model.Property{
 						Value: 100,
 						Relationships: model.Relationships{
-							"wall": {Object: "wall:right"},
+							"wall": model.Relationship{Object: "wall:right"},
 						},
 						Properties: model.Properties{
-							"color": {Value: "white"},
+							"color": model.Property{Value: "white"},
 						},
 					},
 				},
 				Relationships: model.Relationships{
-					"town": {
+					"town": model.Relationship{
 						Object: "town:rome",
 						Relationships: model.Relationships{
-							"neighborhood": {Object: "town:rome:neighborhood:eur"},
+							"neighborhood": model.Relationship{Object: "town:rome:neighborhood:eur"},
 						},
 						Properties: model.Properties{
-							"transient": {Value: false},
+							"transient": model.Property{Value: false},
 						},
 					},
 				},
@@ -132,7 +132,7 @@ func TestMarshalEntity(t *testing.T) {
 				ID:   "cabin:4",
 				Type: "thing",
 				Relationships: model.Relationships{
-					"town": {
+					"town": model.Relationship{
 						Object:     "town:rome",
 						ObservedAt: &observedTest,
 					},
@@ -146,7 +146,7 @@ func TestMarshalEntity(t *testing.T) {
 				ID:   "cabin:4",
 				Type: "thing",
 				Properties: model.Properties{
-					"light": {
+					"light": model.Property{
 						Value:      100,
 						ObservedAt: &observedTest,
 					},

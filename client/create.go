@@ -22,6 +22,12 @@ func (client *NgsiLdClient) CreateEntity(ctx context.Context, ldCtx *ldcontext.L
 		ldCtx = &ldcontext.DefaultContext
 	}
 
+	// Validate entity to be created before contacting the server
+	err := entity.Validate(true)
+	if err != nil {
+		return errors.Wrap(err, "invalid Entity")
+	}
+
 	createURL := strings.Join([]string{client.url, createEntityEndpoint}, "/")
 	createRequest, err := addContext(entity, ldCtx)
 	if err != nil {
@@ -56,10 +62,16 @@ func (client *NgsiLdClient) CreateEntity(ctx context.Context, ldCtx *ldcontext.L
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
 	conflict := requestError{}
 	err = json.Unmarshal(bodyBytes, &conflict)
-	if err != nil || conflict.ErrType != ngsiLdErrAlreadyExist {
-		return fmt.Errorf("Unexpected status code: '%d'\nResponse body: %s", resp.StatusCode, string(bodyBytes))
+	if err != nil || conflict.ErrType == ngsiLdErrInvalidRequest {
+		return errors.Wrapf(ErrNgsiLdInvalidRequest, "ID: %s", entity.ID)
+	}
+	if err != nil || conflict.ErrType == ngsiLdErrBadData {
+		return errors.Wrapf(ErrNgsiLdInvalidID, "ID: %s", entity.ID)
+	}
+	if err != nil || conflict.ErrType == ngsiLdErrAlreadyExist {
+		return errors.Wrapf(ErrNgsiLdEntityExists, "ID: %s", entity.ID)
 	}
 
-	return errors.Wrapf(ErrNgsiLdEntityExists, "ID: %s", entity.ID)
+	return fmt.Errorf("Unexpected status code: '%d'\nResponse body: %s", resp.StatusCode, string(bodyBytes))
 
 }

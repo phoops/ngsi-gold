@@ -134,3 +134,24 @@ func TestCreateDuplicate(t *testing.T) {
 	assert.Error(t, err)
 	assert.ErrorIs(t, err, client.ErrNgsiLdEntityExists)
 }
+
+func TestCreateEntityValidation(t *testing.T) {
+	testEntity := model.Entity{
+		ID: "entity:1",
+		//Missing Type
+	}
+
+	cli, err := client.New(
+		client.SetURL("unused"),
+	)
+
+	assert.NoError(t, err)
+
+	err = cli.CreateEntity(
+		context.Background(),
+		&ldcontext.DefaultContext,
+		&testEntity,
+	)
+	assert.Error(t, err)
+	assert.ErrorContains(t, err, "invalid Entity")
+}

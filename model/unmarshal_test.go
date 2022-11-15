@@ -30,7 +30,7 @@ func TestUnmarshalRelationship(t *testing.T) {
 			relationship: model.Relationship{
 				Object: "urn:object_id",
 				Relationships: model.Relationships{
-					"r1": {Object: "urn:nested_object_id"},
+					"r1": model.Relationship{Object: "urn:nested_object_id"},
 				},
 			},
 		},
@@ -40,7 +40,7 @@ func TestUnmarshalRelationship(t *testing.T) {
 			relationship: model.Relationship{
 				Object: "urn:object_id",
 				Properties: model.Properties{
-					"p1": {Value: "property value"},
+					"p1": model.Property{Value: "property value"},
 				},
 			},
 		},
@@ -165,7 +165,7 @@ func TestUnmarshalProperty(t *testing.T) {
 			property: model.Property{
 				Value: "words or phrases",
 				Relationships: model.Relationships{
-					"r1": {Object: "urn:nested_object_id"},
+					"r1": model.Relationship{Object: "urn:nested_object_id"},
 				},
 			},
 		},
@@ -175,7 +175,7 @@ func TestUnmarshalProperty(t *testing.T) {
 			property: model.Property{
 				Value: "words or phrases",
 				Properties: model.Properties{
-					"p1": {Value: "property value"},
+					"p1": model.Property{Value: "property value"},
 				},
 			},
 		},
@@ -333,7 +333,7 @@ func TestUnmarshalEntity(t *testing.T) {
 				ID:   "urn:room:1",
 				Type: "Room",
 				Relationships: model.Relationships{
-					"r1": {Object: "urn:nested_object_id"},
+					"r1": model.Relationship{Object: "urn:nested_object_id"},
 				},
 			},
 		},
@@ -344,7 +344,7 @@ func TestUnmarshalEntity(t *testing.T) {
 				ID:   "urn:room:1",
 				Type: "Room",
 				Properties: model.Properties{
-					"p1": {Value: "property value"},
+					"p1": model.Property{Value: "property value"},
 				},
 			},
 		},

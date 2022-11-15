@@ -133,3 +133,24 @@ func (p *Property) UnmarshalJSON(b []byte) error {
 
 	return nil
 }
+
+func (p *Property) Validate(strictness bool) ValidationResult {
+	if p.Value != nil {
+		return ErrPropertyMissingValue
+	}
+
+	for _, x := range p.Properties {
+		err := x.Validate(strictness)
+		if err != nil {
+			return err
+		}
+	}
+
+	for _, x := range p.Relationships {
+		err := x.Validate(strictness)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}

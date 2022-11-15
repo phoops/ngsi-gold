@@ -128,3 +128,23 @@ func (r *Relationship) UnmarshalJSON(b []byte) error {
 
 	return nil
 }
+
+func (r *Relationship) Validate(strictness bool) ValidationResult {
+	if len(r.Object) == 0 {
+		return ErrRelationshipMissingObject
+	}
+
+	for _, x := range r.Properties {
+		err := x.Validate(strictness)
+		if err != nil {
+			return err
+		}
+	}
+	for _, x := range r.Relationships {
+		err := x.Validate(strictness)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
