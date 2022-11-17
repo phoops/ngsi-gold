@@ -18,11 +18,13 @@ type Relationships map[string]Relationship
 // Entities have mandatory type and id and a number of Attributes
 // https://github.com/FIWARE/context.Orion-LD/blob/develop/doc/manuals-ld/entities-and-attributes.md
 type Entity struct {
-	ID            string        `json:"id"`   // ID of the entity used to identify the single entity
-	Type          string        `json:"type"` // Type of the entity used for categorization
-	Properties    Properties    `json:"-"`    // Values that define the entity
-	Relationships Relationships `json:"-"`    // Links to other entities
-	// Location      *GeoProperty  `json:"location,omitempty"` // GeoProperty not yet implemented
+	ID               string        `json:"id"`                         // ID of the entity used to identify the single entity
+	Type             string        `json:"type"`                       // Type of the entity used for categorization
+	Properties       Properties    `json:"-"`                          // Values that define the entity
+	Relationships    Relationships `json:"-"`                          // Links to other entities
+	Location         *GeoProperty  `json:"location,omitempty"`         // Position of the Entity
+	ObservationSpace *GeoProperty  `json:"observationSpace,omitempty"` // Area observable by the Entity (e.g. a camera)
+	OperationSpace   *GeoProperty  `json:"operationSpace,omitempty"`   // Area operable by the Entity (e.g. a sprinkler)
 }
 
 func (e Entity) MarshalJSON() ([]byte, error) {

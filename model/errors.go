@@ -22,3 +22,11 @@ var (
 	ErrEntityMissingType ErrInvalidEntity = errors.New(`Entity must have a type`)
 	ErrEntityMissingID   ErrInvalidEntity = errors.New(`Entity must have an ID`)
 )
+
+type ErrInvalidGeoProperty error
+
+var (
+	ErrGeoPropertyWrongType    ErrInvalidGeoProperty = errors.New(`GeoProperty must have "GeoProperty" type`)
+	ErrGeoPropertyMissingValue ErrInvalidGeoProperty = errors.New(`GeoProperty must have a "value" field`)
+	ErrGeoPropertyInvalidValue ErrInvalidGeoProperty = errors.New(`GeoProperty value must be a valid GeoJson geometry except GeometryCollection`)
+)
