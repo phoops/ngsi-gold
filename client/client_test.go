@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/phoops/ngsild/client"
+	"github.com/phoops/ngsi-gold/client"
 	"github.com/stretchr/testify/assert"
 )
 

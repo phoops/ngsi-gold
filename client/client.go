@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/phoops/ngsild/ldcontext"
+	"github.com/phoops/ngsi-gold/ldcontext"
 )
 
 var (

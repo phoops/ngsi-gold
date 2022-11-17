@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/phoops/ngsild/ldcontext"
-	"github.com/phoops/ngsild/model"
+	"github.com/phoops/ngsi-gold/ldcontext"
+	"github.com/phoops/ngsi-gold/model"
 	"github.com/pkg/errors"
 )
 

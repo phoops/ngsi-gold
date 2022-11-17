@@ -1,4 +1,4 @@
-module github.com/phoops/ngsild
+module github.com/phoops/ngsi-gold
 
 go 1.18
 
