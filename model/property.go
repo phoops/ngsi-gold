@@ -135,7 +135,7 @@ func (p *Property) UnmarshalJSON(b []byte) error {
 }
 
 func (p *Property) Validate(strictness bool) ValidationResult {
-	if p.Value != nil {
+	if p.Value == nil {
 		return ErrPropertyMissingValue
 	}
 
