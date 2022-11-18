@@ -8,6 +8,7 @@ This client aims to be compliant with NGSI-LD Specification from ETSI.
 
 * [NGSI-LD Primer](https://www.etsi.org/deliver/etsi_gr/CIM/001_099/008/01.01.01_60/gr_CIM008v010101p.pdf)
 * [NGSI-LD Whitepaper](https://www.etsi.org/images/files/ETSIWhitePapers/ETSI_WP_42_NGSI_LD.pdf)
+* [NGSI-LD Specification](https://www.etsi.org/deliver/etsi_gs/CIM/001_099/009/01.02.02_60/gs_CIM009v010202p.pdf)
 
 ### Open Source implementations of the server part
 
