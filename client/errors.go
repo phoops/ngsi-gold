@@ -19,6 +19,7 @@ var ngsiLdErrInvalidRequest = "https://uri.etsi.org/ngsi-ld/errors/InvalidReques
 // Operations
 type ErrNgsiLdOperation error
 
-var ErrNgsiLdEntityExists = errors.New("Entity already exists")
-var ErrNgsiBadData = errors.New("Bad request")
-var ErrNgsiLdInvalidRequest = errors.New("Invalid JSON of the request")
+var ErrNgsiLdEntityExists ErrNgsiLdOperation = errors.New("Entity already exists")
+var ErrNgsiBadData ErrNgsiLdOperation = errors.New("Bad request")
+var ErrNgsiLdInvalidRequest ErrNgsiLdOperation = errors.New("Invalid JSON of the request")
+var ErrNgsiMixedResponse ErrNgsiLdOperation = errors.New("Mixed errors")
