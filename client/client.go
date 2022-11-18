@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/phoops/ngsi-gold/ldcontext"
+	"github.com/pkg/errors"
 )
 
 var (
@@ -54,10 +55,50 @@ func (c *NgsiLdClient) Validate() error {
 }
 
 type requestBody map[string]json.RawMessage
-type requestError struct {
+type batchRequestBody []*requestBody
+
+type RequestError struct {
 	ErrType string `json:"type"`
 	Title   string `json:"title"`
 	Detail  string `json:"detail"`
+}
+
+type BatchRequestError struct {
+	Success []string                `json:"success"`
+	Errors  []BatchRequestErrorItem `json:"errors"`
+}
+
+type BatchRequestErrorItem struct {
+	ID             string       `json:"@id"`
+	ProblemDetails RequestError `json:"-"`
+}
+
+func (item *BatchRequestErrorItem) UnmarshalJSON(b []byte) error {
+	kv := map[string]json.RawMessage{}
+	err := json.Unmarshal(b, &kv)
+	if err != nil {
+		return err
+	}
+
+	id, ok := kv["@id"]
+	if !ok {
+		return errors.New("can't parse error item")
+	}
+	item.ID = string(id)
+
+	problemString, ok := kv["ProblemDetails"]
+	if !ok {
+		return errors.New("can't parse error item")
+	}
+
+	parsedError := RequestError{}
+	err = json.Unmarshal(problemString, &parsedError)
+	if err != nil {
+		return errors.New("can't parse error item")
+	}
+
+	item.ProblemDetails = parsedError
+	return nil
 }
 
 func addContext(payload json.Marshaler, ldCtx *ldcontext.LdContext) (requestBody, error) {

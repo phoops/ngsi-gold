@@ -60,7 +60,7 @@ func (client *NgsiLdClient) CreateEntity(ctx context.Context, ldCtx *ldcontext.L
 	}
 
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	conflict := requestError{}
+	conflict := RequestError{}
 	err = json.Unmarshal(bodyBytes, &conflict)
 	if err != nil {
 		return fmt.Errorf("Unexpected status code: '%d'\nResponse body: %s", resp.StatusCode, string(bodyBytes))
