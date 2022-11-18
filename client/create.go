@@ -62,13 +62,17 @@ func (client *NgsiLdClient) CreateEntity(ctx context.Context, ldCtx *ldcontext.L
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
 	conflict := requestError{}
 	err = json.Unmarshal(bodyBytes, &conflict)
-	if err != nil || conflict.ErrType == ngsiLdErrInvalidRequest {
+	if err != nil {
+		return fmt.Errorf("Unexpected status code: '%d'\nResponse body: %s", resp.StatusCode, string(bodyBytes))
+	}
+
+	if conflict.ErrType == ngsiLdErrInvalidRequest {
 		return errors.Wrapf(ErrNgsiLdInvalidRequest, "ID: %s", entity.ID)
 	}
-	if err != nil || conflict.ErrType == ngsiLdErrBadData {
-		return errors.Wrapf(ErrNgsiLdInvalidID, "ID: %s", entity.ID)
+	if conflict.ErrType == ngsiLdErrBadData {
+		return errors.Wrapf(ErrNgsiBadData, "ID: %s, Detail: %s", entity.ID, conflict.Detail)
 	}
-	if err != nil || conflict.ErrType == ngsiLdErrAlreadyExist {
+	if conflict.ErrType == ngsiLdErrAlreadyExist {
 		return errors.Wrapf(ErrNgsiLdEntityExists, "ID: %s", entity.ID)
 	}
 
