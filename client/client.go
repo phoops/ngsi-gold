@@ -57,20 +57,20 @@ func (c *NgsiLdClient) Validate() error {
 type requestBody map[string]json.RawMessage
 type batchRequestBody []*requestBody
 
-type RequestError struct {
+type ProblemDetails struct {
 	ErrType string `json:"type"`
 	Title   string `json:"title"`
 	Detail  string `json:"detail"`
 }
 
-type BatchRequestError struct {
+type BatchOperationResult struct {
 	Success []string                `json:"success"`
 	Errors  []BatchRequestErrorItem `json:"errors"`
 }
 
 type BatchRequestErrorItem struct {
-	ID             string       `json:"@id"`
-	ProblemDetails RequestError `json:"-"`
+	ID             string         `json:"@id"`
+	ProblemDetails ProblemDetails `json:"-"`
 }
 
 func (item *BatchRequestErrorItem) UnmarshalJSON(b []byte) error {
@@ -91,7 +91,7 @@ func (item *BatchRequestErrorItem) UnmarshalJSON(b []byte) error {
 		return errors.New("can't parse error item")
 	}
 
-	parsedError := RequestError{}
+	parsedError := ProblemDetails{}
 	err = json.Unmarshal(problemString, &parsedError)
 	if err != nil {
 		return errors.New("can't parse error item")

@@ -73,7 +73,7 @@ func (client *NgsiLdClient) BatchUpsertEntities(ctx context.Context, payload []*
 
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
 
-	conflict := RequestError{}
+	conflict := ProblemDetails{}
 	err = json.Unmarshal(bodyBytes, &conflict)
 
 	if err == nil {
@@ -85,7 +85,7 @@ func (client *NgsiLdClient) BatchUpsertEntities(ctx context.Context, payload []*
 		}
 	}
 
-	multiError := BatchRequestError{}
+	multiError := BatchOperationResult{}
 	err = json.Unmarshal(bodyBytes, &multiError)
 	if err != nil {
 		return fmt.Errorf("Unexpected status code: '%d'\nResponse body: %s", resp.StatusCode, string(bodyBytes))
