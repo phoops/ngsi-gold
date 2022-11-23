@@ -1,8 +1,8 @@
-github.com/Philiphil/geojson v1.0.1 h1:AEiPxHOJAWerugJbaKGBEtPRSZdrbKnLUOwKqnIWtJ4=
-github.com/Philiphil/geojson v1.0.1/go.mod h1:SA1rk+ObShkKl5GwSeiCG4LREePOzE93Y29OCyTvYxE=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/philiphil/geojson v1.0.1 h1:7Q35wlPfqz75ft4e8CgldJptiWPcwI6R1poamyushA8=
+github.com/philiphil/geojson v1.0.1/go.mod h1:YYokcD1A1obooA8+VyymCg0tRAPj8vPjV6MiaIzp3Z4=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Philiphil/geojson"
+	"github.com/philiphil/geojson"
 	"github.com/pkg/errors"
 )
 
