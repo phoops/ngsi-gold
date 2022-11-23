@@ -23,3 +23,8 @@ var ErrNgsiLdEntityExists ErrNgsiLdOperation = errors.New("Entity already exists
 var ErrNgsiBadData ErrNgsiLdOperation = errors.New("Bad request")
 var ErrNgsiLdInvalidRequest ErrNgsiLdOperation = errors.New("Invalid JSON of the request")
 var ErrNgsiMixedResponse ErrNgsiLdOperation = errors.New("Mixed errors")
+
+// Options
+type ErrInvalidOptions error
+
+var InvalidUpsertOptions ErrInvalidOptions = errors.New("Invalid options provided for Upsert operation")

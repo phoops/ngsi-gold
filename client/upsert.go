@@ -21,7 +21,34 @@ type EntityWithContext struct {
 	entity *model.Entity
 }
 
-func (client *NgsiLdClient) BatchUpsertEntities(ctx context.Context, payload []*EntityWithContext) error {
+type upsertMode string
+
+const upsertModeReplace upsertMode = "replace"
+const upsertModeUpdate upsertMode = "update"
+
+type batchUpsertOptions struct {
+	mode upsertMode
+}
+
+func newBatchUpsertOptions() *batchUpsertOptions {
+	return &batchUpsertOptions{
+		mode: upsertModeReplace,
+	}
+}
+
+type UpsertOptionFunc func(*batchUpsertOptions) error
+
+var UpsertSetUpdateMode UpsertOptionFunc = func(o *batchUpsertOptions) error {
+	o.mode = upsertModeUpdate
+	return nil
+}
+
+var UpsertSetReplaceMode UpsertOptionFunc = func(o *batchUpsertOptions) error {
+	o.mode = upsertModeReplace
+	return nil
+}
+
+func (client *NgsiLdClient) BatchUpsertEntities(ctx context.Context, payload []*EntityWithContext, opts ...UpsertOptionFunc) error {
 	batchUpsertURL := strings.Join([]string{client.url, batchUpsertEndpoint}, "/")
 	batchRequest := batchRequestBody{}
 
@@ -59,6 +86,22 @@ func (client *NgsiLdClient) BatchUpsertEntities(ctx context.Context, payload []*
 	)
 	if err != nil {
 		return err
+	}
+
+	requestOptions := newBatchUpsertOptions()
+	for _, o := range opts {
+		err := o(requestOptions)
+		if err != nil {
+			return errors.Wrap(InvalidUpsertOptions, err.Error())
+		}
+	}
+
+	q := req.URL.Query()
+	switch requestOptions.mode {
+	case upsertModeReplace:
+		q.Add("options", string(upsertModeReplace))
+	case upsertModeUpdate:
+		q.Add("options", string(upsertModeUpdate))
 	}
 
 	resp, err := client.c.Do(req)
