@@ -32,9 +32,15 @@ func (e Entity) MarshalJSON() ([]byte, error) {
 
 	data["type"] = e.Type
 	data["id"] = e.ID
-	// if e.Location != nil {
-	// 	data["location"] = e.Location
-	// }
+	if e.Location != nil {
+		data["location"] = e.Location
+	}
+	if e.ObservationSpace != nil {
+		data["observationSpace"] = e.ObservationSpace
+	}
+	if e.OperationSpace != nil {
+		data["operationSpace"] = e.OperationSpace
+	}
 
 	for k, v := range e.Properties {
 		data[k] = v
