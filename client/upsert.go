@@ -17,8 +17,8 @@ import (
 const batchUpsertEndpoint string = "ngsi-ld/v1/entityOperations/upsert"
 
 type EntityWithContext struct {
-	ldCtx  *ldcontext.LdContext
-	entity *model.Entity
+	LdCtx  *ldcontext.LdContext
+	Entity *model.Entity
 }
 
 type upsertMode string
@@ -53,8 +53,8 @@ func (client *NgsiLdClient) BatchUpsertEntities(ctx context.Context, payload []*
 	batchRequest := batchRequestBody{}
 
 	for _, x := range payload {
-		ldCtx := x.ldCtx
-		entity := x.entity
+		ldCtx := x.LdCtx
+		entity := x.Entity
 		// Set default context whenever missing
 		if ldCtx == nil {
 			ldCtx = &ldcontext.DefaultContext
@@ -92,7 +92,7 @@ func (client *NgsiLdClient) BatchUpsertEntities(ctx context.Context, payload []*
 	for _, o := range opts {
 		err := o(requestOptions)
 		if err != nil {
-			return errors.Wrap(InvalidUpsertOptions, err.Error())
+			return errors.Wrap(ErrInvalidUpsertOptions, err.Error())
 		}
 	}
 

@@ -27,4 +27,4 @@ var ErrNgsiMixedResponse ErrNgsiLdOperation = errors.New("Mixed errors")
 // Options
 type ErrInvalidOptions error
 
-var InvalidUpsertOptions ErrInvalidOptions = errors.New("Invalid options provided for Upsert operation")
+var ErrInvalidUpsertOptions ErrInvalidOptions = errors.New("Invalid options provided for Upsert operation")
