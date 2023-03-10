@@ -29,7 +29,7 @@ func (p GeoProperty) MarshalJSON() ([]byte, error) {
 	data["type"] = p.Type()
 	data["value"] = p.Value
 	if p.ObservedAt != nil {
-		data["observedAt"] = p.ObservedAt
+		data["observedAt"] = p.ObservedAt.UTC().Format(timeRFC3339Micro)
 	}
 	if p.DatasetID != nil {
 		data["datasetId"] = p.DatasetID

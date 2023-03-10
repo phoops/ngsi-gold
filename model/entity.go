@@ -27,6 +27,8 @@ type Entity struct {
 	OperationSpace   *GeoProperty  `json:"operationSpace,omitempty"`   // Area operable by the Entity (e.g. a sprinkler)
 }
 
+const timeRFC3339Micro = "2006-01-02T15:04:05.999999Z07:00"
+
 func (e Entity) MarshalJSON() ([]byte, error) {
 	data := map[string]any{}
 

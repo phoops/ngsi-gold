@@ -47,7 +47,8 @@ func TestMarshalEntity(t *testing.T) {
 		json   string
 	}
 
-	observedTest := time.Now()
+	observedTest, err := time.Parse(time.RFC3339Nano, "2023-02-13T11:30:40.123456789Z")
+	assert.NoError(t, err)
 
 	tests := []entityTest{
 		{
@@ -138,7 +139,7 @@ func TestMarshalEntity(t *testing.T) {
 					},
 				},
 			},
-			json: fmt.Sprintf(`{"id":"cabin:4","town":{"object":"town:rome","observedAt":"%s","type":"Relationship"},"type":"thing"}`, observedTest.Format(time.RFC3339Nano)),
+			json: fmt.Sprintf(`{"id":"cabin:4","town":{"object":"town:rome","observedAt":"%s","type":"Relationship"},"type":"thing"}`, "2023-02-13T11:30:40.123456Z"),
 		},
 		{
 			name: "property with special attribute",
@@ -152,7 +153,7 @@ func TestMarshalEntity(t *testing.T) {
 					},
 				},
 			},
-			json: fmt.Sprintf(`{"id":"cabin:4","light":{"observedAt":"%s","type":"Property","value":100},"type":"thing"}`, observedTest.Format(time.RFC3339Nano)),
+			json: fmt.Sprintf(`{"id":"cabin:4","light":{"observedAt":"%s","type":"Property","value":100},"type":"thing"}`, "2023-02-13T11:30:40.123456Z"),
 		},
 	}
 

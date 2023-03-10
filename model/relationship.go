@@ -27,7 +27,7 @@ func (r Relationship) MarshalJSON() ([]byte, error) {
 	data["type"] = r.Type()
 	data["object"] = r.Object
 	if r.ObservedAt != nil {
-		data["observedAt"] = r.ObservedAt
+		data["observedAt"] = r.ObservedAt.UTC().Format(timeRFC3339Micro)
 	}
 	if r.DatasetID != nil {
 		data["datasetId"] = r.DatasetID
